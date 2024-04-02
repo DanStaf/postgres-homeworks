@@ -37,6 +37,18 @@ def split_row(text):
     """
     Разделяет строку по запятым
     Если в тексте есть запятая, а затем пробел, это будет одна ячейка
+
+
+    # Для работы с csv файлами можно воспользоваться библиотекой "csv".
+    # Пример:
+    with connection.cursor() as cursor:
+        with open('north_data\\employees_data.csv') as csv_file:
+            header = next(csv_file) # служит для пропуска первой строчки, которая является заголовком.
+            csv_reader = csv.reader(csv_file)
+            for row in csv_reader:
+                query = '''INSERT INTO employees
+                VALUES (%s, %s, %s, %s, %s, %s)'''
+                cursor.execute(query, row)
     """
 
     row = []
@@ -113,11 +125,12 @@ def fill_data_in_db():
             cur.executemany(customers_query, customers_data)
             cur.executemany(employees_query, employees_data)
             cur.executemany(orders_query, orders_data)
-            cur.execute("SELECT * FROM customers, employees, orders LIMIT 3")
 
-            rows = cur.fetchall()
-            for row in rows:
-                print(row)
+            # вывод на экран
+            #cur.execute("SELECT * FROM customers, employees, orders LIMIT 3")
+            #rows = cur.fetchall()
+            #for row in rows:
+            #    print(row)
 
         conn.commit()
 
